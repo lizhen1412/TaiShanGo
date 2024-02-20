@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/lizhen1412/TaiShanGo/httpclient"
 )
@@ -27,7 +29,11 @@ type ResponseBody struct {
 
 func main() {
 	// 定义请求的URL
-	url := "http://127.0.0.1:8081/auth"
+	url := "http://192.168.0.233:8081/auth"
+
+	client := &http.Client{
+		Timeout: 3 * time.Second, // 设置3秒超时
+	}
 
 	// 构造请求体数据
 	requestBody := RequestBody{
@@ -42,7 +48,7 @@ func main() {
 	var responseBody ResponseBody
 
 	// 发送POST请求并处理响应
-	err := httpclient.PostJson(url, requestBody, &responseBody, nil)
+	err := httpclient.PostJson(url, requestBody, &responseBody, nil, client)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
