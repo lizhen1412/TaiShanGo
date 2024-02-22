@@ -1,0 +1,12 @@
+database:
+  host: "localhost"
+  port: 3306
+  user: "devuser"
+  password: "devpass"
+  name: "myapp_dev"
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""
+  db: 0
