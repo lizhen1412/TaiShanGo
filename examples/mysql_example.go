@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/lizhen1412/TaiShanGo/config"
 	"github.com/lizhen1412/TaiShanGo/database"
@@ -41,14 +42,28 @@ func main() {
 
 	// 连接数据库
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-		// 使用自定义连接池设置
-		PrepareStmt: true, // 启用预编译语句
+		Logger:      logger.Default.LogMode(logger.Info), // 使用自定义Logger
+		PrepareStmt: true,                                // 启用预编译语句
 	})
 
 	if err != nil {
 		panic("failed to connect database")
 	}
+
+	// 获取底层sql.DB对象以设置连接池参数
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic("failed to get database")
+	}
+
+	// 设置最大打开的连接数
+	sqlDB.SetMaxOpenConns(100)
+
+	// 设置最大闲置的连接数
+	sqlDB.SetMaxIdleConns(25)
+
+	// 设置了连接可复用的最大时间
+	sqlDB.SetConnMaxLifetime(5 * time.Minute)
 
 	// 执行数据库迁移
 	err = db.AutoMigrate(&User{})
