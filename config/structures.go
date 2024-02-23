@@ -19,10 +19,16 @@ type RedisConfig struct {
 	DB       int    `mapstructure:"db"`       // Redis数据库索引
 }
 
+// LogConfig 定义日志配置结构体
+type LogConfig struct {
+	Level string `mapstructure:"level"` // 日志级别
+}
+
 // AppConfig 定义应用配置结构体
 type AppConfig struct {
 	Database DatabaseConfig `mapstructure:"database"` // 数据库配置
 	Redis    RedisConfig    `mapstructure:"redis"`    // Redis配置
+	Log      LogConfig      `mapstructure:"log"`      // 日志配置
 }
 
 // Validate 方法用于验证配置的有效性
