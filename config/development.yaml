@@ -1,3 +1,5 @@
+server:
+  port: 8080
 database:
   host: "localhost"
   port: 3306
@@ -13,3 +15,7 @@ redis:
 
 log:
   level: "info"
+
+api:
+  user: "http://user.api.com"
+  order: "http://order.api.com"

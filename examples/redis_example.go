@@ -7,6 +7,8 @@ import (
 
 	"github.com/lizhen1412/TaiShanGo/config"
 	"github.com/lizhen1412/TaiShanGo/database"
+	"github.com/lizhen1412/TaiShanGo/logger"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -28,6 +30,9 @@ func main() {
 	// 初始化Redis客户端
 	redisClient, err := database.InitRedis(&redisConfig)
 	if err != nil {
+		// 是否提供了清晰的错误信息和错误码？
+		logger.Error("连接到Redis失败", zap.Error(err))
+		os.Exit(1)
 		panic("failed to connect to Redis: " + err.Error())
 	}
 

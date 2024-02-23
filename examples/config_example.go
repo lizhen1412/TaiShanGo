@@ -21,6 +21,10 @@ func main() {
 	// 初始化配置
 	config.Initialize(env)
 
+	// 访问服务端口号
+	serverConfig := config.GlobalConfig.Server
+	fmt.Println("Server Port:", serverConfig.Port)
+
 	// 访问配置信息
 	dbConfig := config.GlobalConfig.Database
 	fmt.Println("Database Configuration:")
