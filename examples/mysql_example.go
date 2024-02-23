@@ -11,14 +11,16 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+// User 结构体表示用户模型
 type User struct {
-	ID    uint
-	Name  string
-	Email string
+	ID    uint   // 用户ID
+	Name  string // 用户名
+	Email string // 用户邮箱
 }
 
 func main() {
 
+	// 设置环境变量，指定当前环境为开发环境
 	os.Setenv("APP_ENV", "development")
 
 	// 从环境变量获取当前环境，如果未设置则默认为 development
@@ -33,14 +35,17 @@ func main() {
 	// 从配置文件中获取数据库连接信息
 	dbConfig := config.GlobalConfig.Database
 
+	// 构建数据库连接字符串
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 
+	// 连接数据库
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 		// 使用自定义连接池设置
 		PrepareStmt: true, // 启用预编译语句
 	})
+
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -55,6 +60,7 @@ func main() {
 
 	// 示例：创建一个用户
 	newUser := User{Name: "John Doe", Email: "john@example.com"}
+
 	err = userRepo.Create(db, &newUser)
 	if err != nil {
 		panic("failed to create user")

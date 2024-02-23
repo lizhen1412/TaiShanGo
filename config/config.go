@@ -33,9 +33,17 @@ func Initialize(env string) {
 
 	// 配置热重载
 	viper.WatchConfig()
+
+	// 配置热重载
+	// 当配置文件发生更改时，会触发该函数内的操作。
+	// 参数 e 是 fsnotify.Event 类型，表示配置文件的变化事件。
 	viper.OnConfigChange(func(e fsnotify.Event) {
+		// 打印配置文件已更改的消息和文件名
 		fmt.Println("Config file changed:", e.Name)
+
+		// 尝试重新加载配置文件并解析到全局配置变量 GlobalConfig 中
 		if err := viper.Unmarshal(&GlobalConfig); err != nil {
+			// 如果重新加载配置文件失败，则记录错误信息
 			log.Printf("Error re-loading config: %s", err)
 		}
 	})
